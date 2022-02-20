@@ -3,37 +3,40 @@ Wordle in Python.
 
 by: Truman
 """
-
-import tkinter as tk
-from tkinter import ttk
-from tkinter.messagebox import showinfo
+from game import Game
+from enum import Enum, auto
 
 
-class App(tk.Tk):
+class WordleState(Enum):
+    IDLE = auto()
+    PLAYING = auto()
+    COMPLETED = auto()
+
+
+class Wordle(Game):
+    WINDOW_TITLE = "Wordle"
+    WINDOW_SIZE = 500
+
     def __init__(self):
-        super().__init__()
+        super().__init__(Wordle.WINDOW_TITLE, Wordle.WINDOW_SIZE, 
+                         Wordle.WINDOW_SIZE,
+                        )
+        self.state = WordleState.IDLE
 
-        # configure root window
-        self.title("Wordle")
-        self.geometry("1280x720")
+    def set_state(self, state: WordleState):
+        self.state = state
 
-        # label
-        self._label = ttk.Label(self, text="Hello, Wordle!")
-        self._label.pack()
+    def update(self):
+        super().update()
 
-        # button
-        self._button = ttk.Button(self, text="Click me")
-        self._button["command"] = self.__button_clicked
-        self._button.pack()
-
-    def __button_clicked(self):
-        showinfo(title="Information", message="Hello, Wordle!")
+    def paint(self):
+        super().paint()
 
 
 def main():
-    app = App()
-    app.mainloop()
+    game = Wordle()
+    game.run()
+
 
 if __name__ == "__main__":
     main()
-
